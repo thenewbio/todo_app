@@ -11,15 +11,15 @@ class Tables extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-       backgroundColor: Colors.white,
+      backgroundColor: Colors.white,
       appBar: AppBar(),
       body: Center(
-        child: ElevatedButton(
-          onPressed: createExcel, 
-          child: Text('Create excel')),
+        child:
+            ElevatedButton(onPressed: createExcel, child: Text('Create excel')),
       ),
     );
   }
+
   Future<void> createExcel() async {
     final Workbook workbook = Workbook();
     // final Worksheet sheet = workbook.worksheets[0];

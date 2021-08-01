@@ -9,14 +9,13 @@ import 'button_widget.dart';
 import 'progress_dialog_widget.dart';
 
 class VideoCompres extends StatefulWidget {
-  const VideoCompres({ Key key }) : super(key: key);
+  const VideoCompres({Key key}) : super(key: key);
 
   @override
   _VideoCompresState createState() => _VideoCompresState();
 }
 
 class _VideoCompresState extends State<VideoCompres> {
-
   File fileVideo;
   Uint8List thumbnailBytes;
   int videoSize;
@@ -30,9 +29,9 @@ class _VideoCompresState extends State<VideoCompres> {
         centerTitle: true,
         actions: [
           TextButton(
-            style: TextButton.styleFrom(primary: Colors.white),
-            onPressed: clearSelection,
-           child: Text('Clear'))
+              style: TextButton.styleFrom(primary: Colors.white),
+              onPressed: clearSelection,
+              child: Text('Clear'))
         ],
       ),
       body: Container(
@@ -43,29 +42,35 @@ class _VideoCompresState extends State<VideoCompres> {
     );
   }
 
-   Widget buildContent() {
-     if (fileVideo == null) {
-    return ButtonWidget(
-     text: 'Pick Video',
-     onClicked: pickVideo,
-    );
-  } else {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        buildThumbnail(),
-        SizedBox(height: 24,),
-        buildVideoInfo(),
-        SizedBox(height: 24,),
-        buildVideoCompressedInfo(),
-        SizedBox(height: 24,),
-        ButtonWidget(
-          text:  'Compress Video', 
-          onClicked: compressVideo,
+  Widget buildContent() {
+    if (fileVideo == null) {
+      return ButtonWidget(
+        text: 'Pick Video',
+        onClicked: pickVideo,
+      );
+    } else {
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          buildThumbnail(),
+          SizedBox(
+            height: 24,
+          ),
+          buildVideoInfo(),
+          SizedBox(
+            height: 24,
+          ),
+          buildVideoCompressedInfo(),
+          SizedBox(
+            height: 24,
+          ),
+          ButtonWidget(
+            text: 'Compress Video',
+            onClicked: compressVideo,
           )
-      ],
-    );
-  } 
+        ],
+      );
+    }
   }
 
   Widget buildVideoCompressedInfo() {
@@ -73,49 +78,56 @@ class _VideoCompresState extends State<VideoCompres> {
     final size = compressedVideoInfo.filesize / 1000;
     return Column(
       children: [
-      Text(
-        'Compressed Video Info',
-        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-      ),
-      const SizedBox(height: 8,),
-      Text(
-        'Size; $size KB',
-        style: TextStyle(fontSize: 20),
-      ),
-      const SizedBox(height: 8,),
-      Text(
-        '${compressedVideoInfo.path}',
-        textAlign: TextAlign.center,
-      )
+        Text(
+          'Compressed Video Info',
+          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+        ),
+        const SizedBox(
+          height: 8,
+        ),
+        Text(
+          'Size; $size KB',
+          style: TextStyle(fontSize: 20),
+        ),
+        const SizedBox(
+          height: 8,
+        ),
+        Text(
+          '${compressedVideoInfo.path}',
+          textAlign: TextAlign.center,
+        )
       ],
     );
   }
 
   Widget buildThumbnail() => thumbnailBytes == null
-  ? CircularProgressIndicator()
-  : Image.memory(thumbnailBytes,height: 100,);
+      ? CircularProgressIndicator()
+      : Image.memory(
+          thumbnailBytes,
+          height: 100,
+        );
 
   Widget buildVideoInfo() {
     if (videoSize == null) return Container();
     final size = videoSize / 1000;
     return Column(
-     children: [
-       Text("Original Video Info",
-       style: TextStyle(fontSize: 24,fontWeight: FontWeight.bold),
-       ),
-       const SizedBox(height: 8),
-       Text('Size: $size KB',
-       
-        style: TextStyle(fontSize: 20),
-       )
-     ],
+      children: [
+        Text(
+          "Original Video Info",
+          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+        ),
+        const SizedBox(height: 8),
+        Text(
+          'Size: $size KB',
+          style: TextStyle(fontSize: 20),
+        )
+      ],
     );
   }
 
-  Future pickVideo() async{
+  Future pickVideo() async {
     final picker = ImagePicker();
-    final pickedFile = await picker.getVideo(
-      source: ImageSource.gallery);
+    final pickedFile = await picker.getVideo(source: ImageSource.gallery);
     if (pickedFile == null) return;
     final file = File(pickedFile.path);
 
@@ -125,23 +137,22 @@ class _VideoCompresState extends State<VideoCompres> {
     getVideoSize(fileVideo);
   }
 
-  Future generateThumb(File file) async{
+  Future generateThumb(File file) async {
     final thumbnailBytes = await VideoCompress.getByteThumbnail(file.path);
     setState(() => this.thumbnailBytes = thumbnailBytes);
   }
 
-  Future getVideoSize(File file) async{
+  Future getVideoSize(File file) async {
     final size = await file.length();
 
     setState(() => videoSize = size);
   }
 
-  Future compressVideo() async{
-         showDialog(
-           context: context,
-           barrierDismissible: false, 
-           builder: (context) => Dialog(child: ProgressDialogWidet()) 
-           );
+  Future compressVideo() async {
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) => Dialog(child: ProgressDialogWidet()));
 
     final info = await VideoCompressApi.compressVideo(fileVideo);
 

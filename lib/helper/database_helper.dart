@@ -11,16 +11,15 @@ class DatabaseHelper {
 
   DatabaseHelper._instance();
 
-  String  tasksTable = 'task_table';
+  String tasksTable = 'task_table';
   String colId = 'id';
   String colTitle = 'title';
   String colDate = 'date';
-  String colTime = 'time';
   String colPriority = 'priority';
   String colStatus = 'status';
 
   Future<Database> get db async {
-    if(_db == null) {
+    if (_db == null) {
       _db = await _initDb();
     }
     return _db;
@@ -29,14 +28,14 @@ class DatabaseHelper {
   Future<Database> _initDb() async {
     Directory dir = await getApplicationDocumentsDirectory();
     String path = dir.path + 'todo_list.db';
-    final todoListDb = await openDatabase(path, version:  1, onCreate: _createDb);
+    final todoListDb =
+        await openDatabase(path, version: 1, onCreate: _createDb);
     return todoListDb;
   }
 
   void _createDb(Database db, int version) async {
     await db.execute(
-      'CREATE TABLE $tasksTable($colId INTEGER PRIMARY KEY AUTOINCREMENT, $colTitle TEXT, $colDate TEXT, $colTime TEXT,$colPriority TEXT, $colStatus INTEGER)'
-      );
+        'CREATE TABLE $tasksTable($colId INTEGER PRIMARY KEY AUTOINCREMENT, $colTitle TEXT, $colDate TEXT,$colPriority TEXT, $colStatus INTEGER)');
   }
 
   Future<List<Map<String, dynamic>>> getTaskMapList() async {
@@ -64,8 +63,7 @@ class DatabaseHelper {
   Future<int> updateTask(Task task) async {
     Database db = await this.db;
     final int result = await db.update(tasksTable, task.toMap(),
-    where: '$colId = ?', whereArgs: [task.id]
-    );
+        where: '$colId = ?', whereArgs: [task.id]);
     return result;
   }
 

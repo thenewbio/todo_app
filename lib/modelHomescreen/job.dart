@@ -8,5 +8,6 @@ class Job {
   String location;
   String timeRequirement;
 
-  Job(this.companyName, this.jobTitle, this.salary, this.location, this.timeRequirement, this.companyLogo);
+  Job(this.companyName, this.jobTitle, this.salary, this.location,
+      this.timeRequirement, this.companyLogo);
 }
