@@ -141,10 +141,9 @@ class _TodoListScreenState extends State<TodoListScreen> {
                 .length;
 
             return snapshot.data.length == 0? Column(
-              // crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [Container(
-                child: Image.asset("assets/images/emty.png"),
+                child: Image.asset("assets/images/emty.png",height: 70.0),
               ),
               Center(child: Text("No task added",style: TextStyle(fontSize: 20),))
                ] ) :ListView.builder(
