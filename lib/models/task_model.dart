@@ -1,12 +1,13 @@
 class Task {
   int id;
   String title;
+  DateTime time;
   DateTime date;
   String priority;
   int status;
 
-  Task({this.title, this.date, this.priority, this.status});
-  Task.withId({this.id, this.title, this.date, this.priority, this.status});
+  Task({this.title, this.date, this.time,this.priority, this.status});
+  Task.withId({this.id, this.title, this.date, this.time, this.priority, this.status});
 
   Map<String, dynamic> toMap() {
     final map = Map<String, dynamic>();
@@ -15,6 +16,7 @@ class Task {
     }
     map['title'] = title;
     map['date'] = date.toIso8601String();
+    map['time'] = time.toString();
     map['priority'] = priority;
     map['status'] = status;
     return map;
@@ -25,6 +27,7 @@ class Task {
         id: map['id'],
         title: map['title'],
         date: DateTime.parse(map['date']),
+        time: DateTime.parse(map['time']),
         priority: map['priority'],
         status: map['status']);
   }

@@ -17,10 +17,12 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
   String _title = "";
   String _priority;
   DateTime _date = DateTime.now();
+  DateTime _now  = DateTime.now();
   TextEditingController _dateController = TextEditingController();
-  // TextEditingController _timeController = TextEditingController();
+  TextEditingController _timeController = TextEditingController();
 
   final DateFormat _dateFormat = DateFormat('MMM dd, yyyy');
+  final DateFormat _dateFormated = DateFormat('HH:mm');
   final List<String> _priorities = ['Low', 'Medium', 'High'];
 
   @override
@@ -29,14 +31,17 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
     if (widget.task != null) {
       _title = widget.task.title;
       _date = widget.task.date;
+      _now = widget.task.time;
       _priority = widget.task.priority;
     }
     _dateController.text = _dateFormat.format(_date);
+    _timeController.text = _dateFormated.format(_now);
   }
 
   @override
   void dispose() {
     _dateController.dispose();
+    _timeController.dispose();
     super.dispose();
   }
 
@@ -63,9 +68,9 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
   _summit() {
     if (_formKey.currentState.validate()) {
       _formKey.currentState.save();
-      print('$_title, $_date, $_priority');
+      print('$_title, $_date, $_now, $_priority');
 
-      Task task = Task(title: _title, date: _date, priority: _priority);
+      Task task = Task(title: _title, date: _date,time: _now, priority: _priority);
       if (widget.task == null) {
         task.status = 0;
         DatabaseHelper.instance.insertTask(task);
@@ -79,22 +84,26 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
     }
   }
 
-  // _pickTime() async {
-  //   TimeOfDay time = await showTimePicker(
-  //       context: context,
-  //       initialTime: _time,
-  //       builder: (BuildContext context, Widget child) {
-  //         return Theme(
-  //             data: ThemeData(primaryColor: Colors.purple), child: child);
-  //       });
-  //   if (time != null && time != _time) {
-  //     print(_time);
-  //     setState(() {
-  //       _time = time;
-  //     });
-  //     _time = TimeOfDay(hour: time.hour, minute: time.minute);
-  //   }
-  // }
+  _pickTime() async {
+    final TimeOfDay time = 
+      await showTimePicker(
+        context: context,
+        initialTime: TimeOfDay(hour: _now.hour, minute: _now.minute),
+        );
+    if (time != null && time != _now) {
+      print(time);
+      setState(() {
+        _now = DateTime(
+        _date.year,
+        _date.month,
+        _date.day,
+        time.hour,
+        time.minute,
+        );
+      });
+     _timeController.text = _dateFormated.format(_now);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -161,20 +170,20 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                                   borderRadius: BorderRadius.circular(10))),
                         ),
                       ),
-                      // Padding(
-                      //   padding: const EdgeInsets.symmetric(vertical: 20),
-                      //   child: TextFormField(
-                      //     readOnly: true,
-                      //     controller: _timeController,
-                      //     style: TextStyle(fontSize: 18),
-                      //     onTap: _pickTime,
-                      //     decoration: InputDecoration(
-                      //         labelText: "Time",
-                      //         labelStyle: TextStyle(fontSize: 18.0),
-                      //         border: OutlineInputBorder(
-                      //             borderRadius: BorderRadius.circular(10))),
-                      //   ),
-                      // ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 20),
+                        child: TextFormField(
+                          readOnly: true,
+                          controller: _timeController,
+                          style: TextStyle(fontSize: 18),
+                          onTap: _pickTime,
+                          decoration: InputDecoration(
+                              labelText: "Time",
+                              labelStyle: TextStyle(fontSize: 18.0),
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10))),
+                        ),
+                      ),
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 20),
                         child: DropdownButtonFormField(

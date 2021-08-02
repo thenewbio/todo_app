@@ -17,7 +17,9 @@ class TodoListScreen extends StatefulWidget {
 
 class _TodoListScreenState extends State<TodoListScreen> {
    Future<List<Task>> _taskList;
+   DateTime timing;
   final DateFormat _dateFormat = DateFormat('MMM dd, yyyy');
+  final DateFormat _dateFormated = DateFormat('HH:mm');
 
   @override
   void initState() {
@@ -55,7 +57,7 @@ class _TodoListScreenState extends State<TodoListScreen> {
                         : TextDecoration.lineThrough),
               ),
               subtitle: Text(
-                "${_dateFormat.format(task.date)}",
+                "${_dateFormat.format(task.date)} + ${_dateFormated.format(task.time)}",
                 style: TextStyle(
                     color: Colors.white,
                     fontSize: 15,
