@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:mytodo/widgets/app_drawer.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:syncfusion_flutter_xlsio/xlsio.dart';
@@ -12,7 +13,10 @@ class Tables extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: Text("Table"),
+      ),
+      drawer: AppDrawer(),
       body: Center(
         child:
             ElevatedButton(onPressed: createExcel, child: Text('Create excel')),

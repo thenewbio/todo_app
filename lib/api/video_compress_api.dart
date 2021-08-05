@@ -11,7 +11,8 @@ class VideoCompressApi {
       return VideoCompress.compressVideo(file.path,
           quality: VideoQuality.LowQuality,
           includeAudio: true,
-          deleteOrigin: false);
+          deleteOrigin: true
+          );
     } catch (e) {
       VideoCompress.cancelCompression();
     }

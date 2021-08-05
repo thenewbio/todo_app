@@ -3,18 +3,20 @@ import 'dart:io';
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:mytodo/widgets/app_drawer.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pd;
 
-class CompressScreen extends StatefulWidget {
-  const CompressScreen({Key key}) : super(key: key);
+class PDFScreen extends StatefulWidget {
+  static const routeName = "/PDF";
+  const PDFScreen({Key key}) : super(key: key);
 
   @override
-  _CompressScreenState createState() => _CompressScreenState();
+  _PDFScreenState createState() => _PDFScreenState();
 }
 
-class _CompressScreenState extends State<CompressScreen> {
+class _PDFScreenState extends State<PDFScreen> {
   final picker = ImagePicker();
   final pdf = pd.Document();
   List<File> _image = [];
@@ -32,6 +34,7 @@ class _CompressScreenState extends State<CompressScreen> {
                 icon: Icon(Icons.picture_as_pdf))
           ],
         ),
+        drawer: AppDrawer(),
         floatingActionButton: FloatingActionButton(
           onPressed: getImageFromGallery,
           child: Icon(Icons.add),

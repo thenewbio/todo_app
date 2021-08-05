@@ -4,11 +4,13 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mytodo/api/video_compress_api.dart';
+import 'package:mytodo/widgets/app_drawer.dart';
 import 'package:video_compress/video_compress.dart';
 import 'button_widget.dart';
 import 'progress_dialog_widget.dart';
 
 class VideoCompres extends StatefulWidget {
+  static const routeName = "/VideoCompression";
   const VideoCompres({Key key}) : super(key: key);
 
   @override
@@ -34,6 +36,7 @@ class _VideoCompresState extends State<VideoCompres> {
               child: Text('Clear'))
         ],
       ),
+      drawer: AppDrawer(),
       body: Container(
         alignment: Alignment.center,
         padding: EdgeInsets.all(40),
@@ -75,7 +78,7 @@ class _VideoCompresState extends State<VideoCompres> {
 
   Widget buildVideoCompressedInfo() {
     if (compressedVideoInfo == null) return Container();
-    final size = compressedVideoInfo.filesize / 1000;
+    final size = compressedVideoInfo.filesize / 10000;
     return Column(
       children: [
         Text(

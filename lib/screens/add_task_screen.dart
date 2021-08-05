@@ -22,7 +22,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
   TextEditingController _timeController = TextEditingController();
 
   final DateFormat _dateFormat = DateFormat('MMM dd, yyyy');
-  final DateFormat _dateFormated = DateFormat('HH:mm');
+  final DateFormat _dateFormated = DateFormat('hh:mm a');
   final List<String> _priorities = ['Low', 'Medium', 'High'];
 
   @override
