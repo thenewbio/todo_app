@@ -38,14 +38,14 @@ dependencies:
   open_file: ^3.2.1
   pdf: ^3.4.2
   image_picker: ^0.8.1+4
-  flushbar: ^1.10.4
+  # flushbar: ^1.10.4
   marquee: ^2.2.0
   video_compress: ^3.0.0
   step_progress_indicator: ^1.0.1
   flutter_local_notifications: ^8.0.0
   rxdart: ^0.27.1
   flutter_native_timezone: ^1.1.0
- 
+  multi_image_picker: ^4.7.14
 
 dev_dependencies:
   flutter_test:

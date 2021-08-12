@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:intl/intl.dart';
 import '../helper/database_helper.dart';
+import '../main.dart';
 import '../models/task_model.dart';
 
 class AddTaskScreen extends StatefulWidget {
@@ -63,6 +65,38 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
     DatabaseHelper.instance.deleteTask(widget.task.id);
     widget.updateTasklist();
     Navigator.pop(context);
+  }
+   void scheduleAlarm() async {
+     var scheduledNotificationDateTime = DateTime(
+        _date.year,
+        _date.month,
+        _date.day,
+        _now.hour,
+        _now.minute,
+        );
+    var androidPlatformChannelSpecifics = AndroidNotificationDetails(
+      'alarm_notif',
+      'alarm_notif',
+      'Channel for Alarm notification',
+      icon: '@mipmap/ic_launcher',
+      sound: RawResourceAndroidNotificationSound('iphone'),
+      playSound: true,
+      largeIcon: DrawableResourceAndroidBitmap('@mipmap/ic_launcher'),
+    );
+
+    var iOSPlatformChannelSpecifics = IOSNotificationDetails(
+        sound: 'a_long_cold_sting.wav',
+        presentAlert: true,
+        presentBadge: true,
+        presentSound: true);
+    var platformChannelSpecifics = NotificationDetails(
+        android: androidPlatformChannelSpecifics, iOS: iOSPlatformChannelSpecifics);
+    //  String title = widget.task.title;
+await flutterNotification.schedule(0,"Task", widget.task.title,
+        scheduledNotificationDateTime, platformChannelSpecifics,
+    //      uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
+    // matchDateTimeComponents: DateTimeComponents.dayOfWeekAndTime
+    );
   }
 
   _summit() {
@@ -227,7 +261,11 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                           borderRadius: BorderRadius.circular(30.0),
                         ),
                         child: TextButton(
-                            onPressed: _summit,
+                            onPressed: () {
+                               _summit();
+                            scheduleAlarm();
+                            //  _summit();
+                            },
                             child: Text(
                               widget.task == null ? "Add" : "Update",
                               style: TextStyle(
