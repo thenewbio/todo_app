@@ -18,6 +18,7 @@ class DatabaseHelper {
   String colTime = 'time';
   String colPriority = 'priority';
   String colStatus = 'status';
+  String colIsActive = 'isActive';
 
   Future<Database> get db async {
     if (_db == null) {
@@ -36,7 +37,12 @@ class DatabaseHelper {
 
   void _createDb(Database db, int version) async {
     await db.execute(
-        'CREATE TABLE $tasksTable($colId INTEGER PRIMARY KEY AUTOINCREMENT, $colTitle TEXT, $colDate TEXT,$colTime TEXT,$colPriority TEXT, $colStatus INTEGER)');
+        '''CREATE TABLE $tasksTable(
+        $colId INTEGER PRIMARY KEY AUTOINCREMENT, 
+        $colTitle TEXT, $colDate TEXT,
+        $colTime TEXT,$colPriority TEXT, 
+        $colStatus INTEGER,
+        $colIsActive BOOLEAN,)''');
   }
 
   Future<List<Map<String, dynamic>>> getTaskMapList() async {

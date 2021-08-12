@@ -1,22 +1,18 @@
+import 'package:dynamic_themes/dynamic_themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:mytodo/models/ads_state.dart';
-import 'package:mytodo/models/theme.dart';
-import 'package:mytodo/screens/pdf_screen.dart';
-import 'package:mytodo/screens/todo_list_screen.dart';
-import 'package:mytodo/widgets/video_compress.dart';
+import 'package:mytodo/provider/task_provider.dart';
+import 'package:mytodo/provider/theme.dart';
+import 'package:mytodo/views/task_views.dart';
 import 'package:provider/provider.dart';
-import '../settings.dart';
-import '../widgets/table.dart';
 
+import 'service/notification.dart';
 
 final FlutterLocalNotificationsPlugin flutterNotification = 
 FlutterLocalNotificationsPlugin();
-
-main() async {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
- var initializeSettingsAndroid = 
+  var initializeSettingsAndroid = 
    AndroidInitializationSettings('@mipmap/ic_launcher');
    var  initializeSettingsIos = IOSInitializationSettings(
      requestAlertPermission: true,
@@ -32,35 +28,23 @@ main() async {
           debugPrint('notification payload' + payload);
         }
       });
-  final initFuture = MobileAds.instance.initialize();
-  final adState = AdState(initFuture);
-  runApp(Provider.value(
-    value: adState,
-    builder: (context , child) => MyApp(),
-     )
-  );
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => ThemeNotifier(),
-      child: Consumer<ThemeNotifier>(
-        builder: (context, ThemeNotifier notifier, child) {
-         return MaterialApp(
-            debugShowCheckedModeBanner: false,
-            title: 'Todo pro',
-            theme: notifier.darkTheme ? dark : light,
-            home: TodoListScreen(),
-            routes: {
-              Settings.routeName: (context) => Settings(),
-              Tables.routeName: (context) => Table(),
-              VideoCompres.routeName: (ctx) => VideoCompres(),
-              PDFScreen.routeName:(ctx) => PDFScreen()
-            });
-        },
-        
+      create: (context) => TaskProvider(),
+      child: DynamicTheme(
+        themeCollection: themeCollection,
+        defaultThemeId: AppThemes.Dark,
+        builder: (context, themeData) => MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'Reminder App',
+          theme: themeData,
+          home: ReminderScreen(),
+        ),
       ),
     );
   }

@@ -5,9 +5,10 @@ class Task {
   DateTime date;
   String priority;
   int status;
+  bool isActive;
 
-  Task({this.title, this.date, this.time,this.priority, this.status});
-  Task.withId({this.id, this.title, this.date, this.time, this.priority, this.status});
+  Task({this.title, this.date, this.time,this.priority, this.status,this.isActive});
+  Task.withId({this.id, this.title, this.date, this.time, this.priority, this.status,this.isActive});
 
   Map<String, dynamic> toMap() {
     final map = Map<String, dynamic>();
@@ -19,6 +20,7 @@ class Task {
     map['time'] = time.toString();
     map['priority'] = priority;
     map['status'] = status;
+    map['isActive'] = isActive ? 0 : 1;
     return map;
   }
 
@@ -29,6 +31,7 @@ class Task {
         date: DateTime.parse(map['date']),
         time: DateTime.parse(map['time']),
         priority: map['priority'],
-        status: map['status']);
+        status: map['status'],
+        isActive: map['isActive'] == 0,);
   }
 }
