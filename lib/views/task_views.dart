@@ -7,6 +7,7 @@ import 'package:mytodo/widget/task_list.dart';
 import 'package:mytodo/widgets/app_drawer.dart';
 // import 'package:flutter_native_timezone/flutter_native_timezone.dart';
 import 'package:provider/provider.dart';
+import 'package:step_progress_indicator/step_progress_indicator.dart';
 
 import 'new_task_view.dart';
 
@@ -59,7 +60,7 @@ class _ReminderScreenState extends State<ReminderScreen> {
               )
             ],
           ),
-          body: notifier.reminders.isEmpty
+          body: notifier.reminders.length == 0
               ? Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -82,7 +83,42 @@ class _ReminderScreenState extends State<ReminderScreen> {
                   itemCount: notifier.reminders.length,
                   itemBuilder: (context, index) {
                     final reminders = notifier.reminders[index];
-                    return TaskList(
+                    // if (index == 0) {
+                    // return Padding(
+                    //   padding: EdgeInsets.symmetric(
+                    //       horizontal: 20.0, vertical: 20.0),
+                    //   child: Column(
+                    //     crossAxisAlignment: CrossAxisAlignment.start,
+                    //     children: [
+                    //       Center(
+                    //         child: CircularStepProgressIndicator(
+                    //           child: Column(
+                    //               mainAxisAlignment: MainAxisAlignment.center,
+                    //               children: [
+                    //                 Text("Tasks",
+                    //                     style: TextStyle(fontSize: 20)),
+                    //                 Text("${notifier.reminders.length}",
+                    //                     style: TextStyle(fontSize: 20))
+                    //               ]),
+                    //           totalSteps: notifier.reminders.length == 1 ? notifier.reminders.length + 1 : notifier.reminders.length,
+                    //           currentStep: 5,
+                    //           stepSize: 8,
+                    //           selectedColor: Colors.redAccent,
+                    //           unselectedColor: Colors.grey[200],
+                    //           selectedStepSize: 10.0,
+                    //           height: 150,
+                    //           width: 150,
+                    //           gradientColor: LinearGradient(
+                    //             begin: Alignment.topLeft,
+                    //             end: Alignment.bottomRight,
+                    //             colors: [Colors.cyan, Colors.purple],
+                    //           ),
+                    //         ),
+                    //       ),
+                   
+                    //     ])
+                    // );}
+                    return  TaskList(
                       reminder: reminders,
                       provider: notifier,
                     );

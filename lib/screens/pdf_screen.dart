@@ -58,11 +58,11 @@ class _PDFScreenState extends State<PDFScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-            RaisedButton(
+            TextButton(
               child: Text("Pick images"),
               onPressed: pickImages,
             ),
-            RaisedButton(
+            TextButton(
               child: Text("Pick images"),
               onPressed: pickImages,
             ),

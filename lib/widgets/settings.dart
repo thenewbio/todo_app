@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mytodo/models/theme.dart';
-import 'package:provider/provider.dart';
+
 
 class Settings extends StatefulWidget {
   static const routeName = "/settings";
@@ -33,15 +32,15 @@ class _SettingsState extends State<Settings> {
                     fontSize: 20,
                   )),
             ),
-            Consumer<ThemeNotifier>(
-          builder:(contex , notifier, child) => SwitchListTile(
-              title: Text("Dark Mode"),
-              onChanged: (val) {
-                notifier.toggleTheme();
-              },
-              value: notifier.darkTheme,
-              ),
-        ),
+        //     Consumer<ThemeNotifier>(
+        //   builder:(contex , notifier, child) => SwitchListTile(
+        //       title: Text("Dark Mode"),
+        //       onChanged: (val) {
+        //         notifier.toggleTheme();
+        //       },
+        //       value: notifier.darkTheme,
+        //       ),
+        // ),
             buildList('Remove Ads', 'One payment to remove ads forever', null),
             buildListTile('Status bar ', 'Disabled', false),
             Container(

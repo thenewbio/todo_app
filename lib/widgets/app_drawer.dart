@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:mytodo/provider/task_provider.dart';
 import 'package:mytodo/screens/pdf_screen.dart';
-import 'package:mytodo/settings.dart';
-import 'package:mytodo/widgets/table.dart';
-import 'package:mytodo/widgets/video_compress.dart';
-// import 'package:mytodo/widgets/table.dart';
+import 'package:mytodo/widgets/settings.dart';
+import 'package:provider/provider.dart';
 
 class AppDrawer extends StatelessWidget {
   @override
@@ -33,7 +32,7 @@ class AppDrawer extends StatelessWidget {
           leading: Icon(Icons.table_chart),
           title: Text('Table'),
           onTap: () {
-            Navigator.of(context).pushReplacementNamed(Tables.routeName);
+            Provider.of<TaskProvider>(context,listen:false).createExcel();
           },
         ),
          ListTile(
@@ -41,13 +40,6 @@ class AppDrawer extends StatelessWidget {
           title: Text('Convert to PDF'),
           onTap: () {
             Navigator.of(context).pushReplacementNamed(PDFScreen.routeName);
-          },
-        ),
-         ListTile(
-          leading: Icon(Icons.video_call),
-          title: Text('Compress Video file'),
-          onTap: () {
-            Navigator.of(context).pushReplacementNamed(VideoCompres.routeName);
           },
         ),
         ListTile(

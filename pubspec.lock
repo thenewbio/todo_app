@@ -99,13 +99,6 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "0.0.5"
-  fading_edge_scrollview:
-    dependency: transitive
-    description:
-      name: fading_edge_scrollview
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "2.0.0"
   fake_async:
     dependency: transitive
     description:
@@ -247,13 +240,6 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "0.6.3"
-  marquee:
-    dependency: "direct main"
-    description:
-      name: marquee
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "2.2.0"
   matcher:
     dependency: transitive
     description:
@@ -588,13 +574,6 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "2.1.0"
-  video_compress:
-    dependency: "direct main"
-    description:
-      name: video_compress
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "3.1.0"
   win32:
     dependency: transitive
     description:

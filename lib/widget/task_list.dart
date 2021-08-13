@@ -74,8 +74,8 @@ class _TaskListState extends State<TaskList> {
                                     if (widget.reminder.isActive) {
                                       LocalNotification.scheduleNotification(
                                           0,
-                                          'Reminder',
                                           widget.reminder.title,
+                                          widget.reminder.content,
                                           widget.reminder.scheduledDate);
                                     } else {
                                       LocalNotification.cancelNotification(0);
@@ -111,9 +111,9 @@ class _TaskListState extends State<TaskList> {
                                     widget.provider
                                         .deleteReminder(widget.reminder.id);
                                     Fluttertoast.showToast(
-                                        msg: 'Reminder deleted');
-                                  }, 'Delete Reminder',
-                                      'This reminder will be deleted');
+                                        msg: 'Task deleted');
+                                  }, 'Delete Task',
+                                      'Have you completed task?');
                                 },
                                 icon: Icon(Icons.delete_outline_outlined,
                                     color: widget.reminder.isActive &&

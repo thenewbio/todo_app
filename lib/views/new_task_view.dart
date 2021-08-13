@@ -63,7 +63,7 @@ class _NewReminderScreenState extends State<NewReminderScreen> {
         context: context,
         initialDate: selectedDate,
         firstDate: selectedDate,
-        lastDate: DateTime(2030));
+        lastDate: DateTime(2050));
     if (newDate != null && newDate != selectedDate)
       setState(() => selectedDate = newDate);
     if (newDate != null) {
@@ -178,7 +178,7 @@ class _NewReminderScreenState extends State<NewReminderScreen> {
     DateTime pickedDate = await pickScheduleDate(context);
     if (pickedDate != null) {
       LocalNotification.scheduleNotification(
-          0, 'Task', titleController.text, pickedDate);
+          0,  titleController.text,contentController.text,pickedDate);
     }
   }
 
