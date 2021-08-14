@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mytodo/provider/task_provider.dart';
-import 'package:mytodo/screens/pdf_screen.dart';
-import 'package:mytodo/widgets/settings.dart';
+import 'package:mytodo/views/pdf_screen.dart';
+import 'package:mytodo/widget/settings.dart';
 import 'package:provider/provider.dart';
 
 class AppDrawer extends StatelessWidget {
@@ -52,18 +52,18 @@ class AppDrawer extends StatelessWidget {
         ListTile(
           leading: Icon(Icons.help),
           title: Text('Help'),
-          onTap: () {},
+          onTap: () {
+             Provider.of<TaskProvider>(context,listen:false).help(context);
+          },
         ),
         ListTile(
           leading: Icon(Icons.contacts),
           title: Text('Follow us'),
-          onTap: () {},
+          onTap: () {
+            Provider.of<TaskProvider>(context,listen:false).showMessageDialog(context);
+          }
         ),
-        ListTile(
-          leading: Icon(Icons.share),
-          title: Text('Share App'),
-          onTap: () {},
-        ),
+       
       ])),
     );
   }

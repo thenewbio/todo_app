@@ -48,6 +48,7 @@ dependencies:
   rxdart: ^0.27.1
   flutter_native_timezone: ^1.1.0
   multi_image_picker: ^4.7.14
+  url_launcher: ^6.0.9
 
 dev_dependencies:
   flutter_test:
