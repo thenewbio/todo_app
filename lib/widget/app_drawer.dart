@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mytodo/provider/task_provider.dart';
+import 'package:mytodo/views/note_view.dart';
 import 'package:mytodo/views/pdf_screen.dart';
 import 'package:mytodo/widget/settings.dart';
 import 'package:provider/provider.dart';
@@ -26,6 +27,13 @@ class AppDrawer extends StatelessWidget {
           title: Text('Task'),
           onTap: () {
             Navigator.of(context).pushReplacementNamed('/');
+          },
+        ),
+        ListTile(
+          leading: Icon(Icons.note),
+          title: Text('Make Note'),
+          onTap: () {
+            Navigator.of(context).pushReplacementNamed(TodoListScreen.routeName);
           },
         ),
          ListTile(

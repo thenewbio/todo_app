@@ -1,6 +1,8 @@
 import 'package:dynamic_themes/dynamic_themes.dart';
 import 'package:flutter/material.dart';
+import 'package:mytodo/views/note_view.dart';
 import 'package:provider/provider.dart';
+import 'provider/note_provider.dart';
 import 'service/notification.dart';
 import '../provider/task_provider.dart';
 import '../provider/theme.dart';
@@ -18,8 +20,14 @@ void main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => TaskProvider(),
+    return MultiProvider(
+      providers: [
+    ChangeNotifierProvider(
+      create: (context) => TaskProvider()),
+      ChangeNotifierProvider(
+      create: (context) => NoteProvider()),
+    ],
+    
       child: DynamicTheme(
         themeCollection: themeCollection,
         defaultThemeId: AppThemes.Dark,
@@ -30,7 +38,8 @@ class MyApp extends StatelessWidget {
           home: ReminderScreen(),
            routes: {
               Settings.routeName: (context) => Settings(),
-              PDFScreen.routeName:(ctx) => PDFScreen()
+              PDFScreen.routeName:(ctx) => PDFScreen(),
+              TodoListScreen.routeName:(ctx) => TodoListScreen()
             }
         ),
       ),
