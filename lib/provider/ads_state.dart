@@ -1,5 +1,7 @@
 // import 'dart:io';
 
+import 'dart:io';
+
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 class AdState{
@@ -7,7 +9,9 @@ class AdState{
 
   AdState(this.initialize);
 
-  String get bannerAd => "ca-app-pub-2576798913742126~2861440515";
+  String get bannerAd => Platform.isAndroid
+  ? 'ca-app-pub-3940256099942544/6300978111'
+  : 'ca-app-pub-3940256099942544/630097811';
 
 
   AdListener get adListener => _adListener;

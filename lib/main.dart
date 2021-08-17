@@ -1,12 +1,13 @@
 import 'package:dynamic_themes/dynamic_themes.dart';
 import 'package:flutter/material.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:mytodo/provider/ads_state.dart';
 import 'package:mytodo/views/note_view.dart';
 import 'package:provider/provider.dart';
 import 'provider/note_provider.dart';
 import 'service/notification.dart';
 import '../provider/task_provider.dart';
 import '../provider/theme.dart';
-import '../views/pdf_screen.dart';
 import '../views/task_views.dart';
 import '../widget/settings.dart';
 
@@ -14,7 +15,12 @@ import '../widget/settings.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await LocalNotification.init();
-  runApp(MyApp());
+  final initFuture = MobileAds.instance.initialize();
+  final adstate = AdState(initFuture);
+  runApp(Provider.value(
+    value: adstate,
+    builder: (context, child) => MyApp()
+    ));
 }
 
 class MyApp extends StatelessWidget {
@@ -38,7 +44,6 @@ class MyApp extends StatelessWidget {
           home: ReminderScreen(),
            routes: {
               Settings.routeName: (context) => Settings(),
-              PDFScreen.routeName:(ctx) => PDFScreen(),
               TodoListScreen.routeName:(ctx) => TodoListScreen()
             }
         ),

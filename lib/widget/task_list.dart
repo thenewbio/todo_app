@@ -13,7 +13,7 @@ class TaskList extends StatefulWidget {
   final Task reminder;
   final TaskProvider provider;
 
-  const TaskList({Key key, this.reminder, this.provider}) : super(key: key);
+  const TaskList({Key key,  this.reminder, this.provider}) : super(key: key);
 
   @override
   _TaskListState createState() => _TaskListState();

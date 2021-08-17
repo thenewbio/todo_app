@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mytodo/provider/task_provider.dart';
 import 'package:mytodo/views/note_view.dart';
-import 'package:mytodo/views/pdf_screen.dart';
 import 'package:mytodo/widget/settings.dart';
 import 'package:provider/provider.dart';
 
@@ -43,13 +42,6 @@ class AppDrawer extends StatelessWidget {
             Provider.of<TaskProvider>(context,listen:false).createExcel();
           },
         ),
-         ListTile(
-          leading: Icon(Icons.picture_as_pdf),
-          title: Text('Convert to PDF'),
-          onTap: () {
-            Navigator.of(context).pushReplacementNamed(PDFScreen.routeName);
-          },
-        ),
         ListTile(
           leading: Icon(Icons.settings),
           title: Text('Settings'),
@@ -58,8 +50,8 @@ class AppDrawer extends StatelessWidget {
           },
         ),
         ListTile(
-          leading: Icon(Icons.help),
-          title: Text('Help'),
+          leading: Icon(Icons.star),
+          title: Text('Rate Us'),
           onTap: () {
              Provider.of<TaskProvider>(context,listen:false).help(context);
           },

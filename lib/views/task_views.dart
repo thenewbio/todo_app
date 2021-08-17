@@ -1,5 +1,7 @@
 import 'package:dynamic_themes/dynamic_themes.dart';
 import 'package:flutter/material.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:mytodo/provider/ads_state.dart';
 import 'package:mytodo/provider/task_provider.dart';
 import 'package:mytodo/provider/theme.dart';
 import 'package:mytodo/service/notification.dart';
@@ -34,6 +36,23 @@ class _ReminderScreenState extends State<ReminderScreen> {
           builder: (ctx) => ReminderScreen(
                 payload: payload,
               )));
+
+      BannerAd banner;
+      @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final adstate = Provider.of<AdState>(context);
+    adstate.initialize.then((status) {
+      setState(() {
+        banner = BannerAd(
+          size: AdSize.banner, 
+          adUnitId: adstate.bannerAd, 
+          listener: adstate.adListener, 
+          request: AdRequest()
+          )..load();
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -78,54 +97,67 @@ class _ReminderScreenState extends State<ReminderScreen> {
                             fontSize: 18))
                   ],
                 )
-              : ListView.builder(
-                  physics: BouncingScrollPhysics(),
-                  itemCount: notifier.reminders.length,
-                  itemBuilder: (context, index) {
-                    final reminders = notifier.reminders[index];
-                    if (index == 0) {
-                    return Padding(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: 0.0, vertical: 20.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Center(
-                            child: CircularStepProgressIndicator(
-                              child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text("Tasks",
-                                        style: TextStyle(fontSize: 20)),
-                                    Text("${notifier.reminders.length}",
-                                        style: TextStyle(fontSize: 20))
-                                  ]),
-                              totalSteps: notifier.reminders.length == 1 ? notifier.reminders.length + 1 : notifier.reminders.length,
-                              currentStep: 5,
-                              stepSize: 8,
-                              selectedColor: Colors.redAccent,
-                              unselectedColor: Colors.grey[200],
-                              selectedStepSize: 10.0,
-                              height: 150,
-                              width: 150,
-                              gradientColor: LinearGradient(
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight,
-                                colors: [Colors.cyan, Colors.purple],
-                              ),
-                            ),
-                          ),
-                   TaskList(
-                      reminder: reminders,
-                      provider: notifier,)
-                        ])
-                    );}
-                    return  TaskList(
-                      reminder: reminders,
-                      provider: notifier,
-                    );
-                  },
-                ),
+              : Column(
+                children: [
+                  Expanded(
+                    child: ListView.builder(
+                        physics: BouncingScrollPhysics(),
+                        itemCount: notifier.reminders.length,
+                        itemBuilder: (context, index) {
+                          final reminders = notifier.reminders[index];
+                          if (index == 0) {
+                          return Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 0.0, vertical: 20.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Center(
+                                  child: CircularStepProgressIndicator(
+                                    child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          Text("Tasks",
+                                              style: TextStyle(fontSize: 20)),
+                                          Text("${notifier.reminders.length}",
+                                              style: TextStyle(fontSize: 20))
+                                        ]),
+                                    totalSteps: notifier.reminders.length == 1 ? notifier.reminders.length + 1 : notifier.reminders.length,
+                                    currentStep: 5,
+                                    stepSize: 8,
+                                    selectedColor: Colors.redAccent,
+                                    unselectedColor: Colors.grey[200],
+                                    selectedStepSize: 10.0,
+                                    height: 150,
+                                    width: 150,
+                                    gradientColor: LinearGradient(
+                                      begin: Alignment.topLeft,
+                                      end: Alignment.bottomRight,
+                                      colors: [Colors.cyan, Colors.purple],
+                                    ),
+                                  ),
+                                ),
+                         TaskList(
+                            reminder: reminders,
+                            provider: notifier,)
+                              ])
+                          );}
+                          return  TaskList(
+                            reminder: reminders,
+                            provider: notifier,);
+                        },
+                      ),
+                  ),
+                if (banner == null)
+                SizedBox(
+                    height: 50,)
+                else 
+                Container(
+                  height: 50,
+                  child: AdWidget(ad: banner,),
+                )
+                ],
+              ),
           floatingActionButtonLocation:
               FloatingActionButtonLocation.centerFloat,
           floatingActionButton: FloatingActionButton(

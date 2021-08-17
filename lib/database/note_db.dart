@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:mytodo/model/notes.dart';
-import 'package:mytodo/model/task.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';

@@ -41,10 +41,7 @@ class _SettingsState extends State<Settings> {
         //       value: notifier.darkTheme,
         //       ),
         // ),
-            buildTile(
-              title:'Remove Ads', 
-             subtitle: 'One payment to remove ads forever', 
-              onTap: null),
+            
             buildTile(
               title: 'Status bar ',
               subtitle: 'Disabled', 
@@ -56,14 +53,15 @@ class _SettingsState extends State<Settings> {
              title: 'Sound ', 
               subtitle:'Phone Default notification tone', 
               onTap: null),
-            buildTile(
-                title: 'Voice', 
-               subtitle: 'Uses system default speech synthesizer(TTS)',
-                onTap: null),
+          
             Container(
-              child: Text(
-                'About',
-                style: TextStyle(fontSize: 20),
+              child: Column(
+                children: [
+                  Text(
+                    'About',
+                    style: TextStyle(fontSize: 20),
+                  ),
+                ],
               ),
             ),
             buildList('Send feedback', Icon(Icons.feedback),
@@ -72,6 +70,25 @@ class _SettingsState extends State<Settings> {
                 subject: "",
                 body: ''
               ) ),
+               buildList('About Us', Icon(Icons.person),
+            () => openEmail(
+                toEmail: 'okamainnocent2020@gmail.com',
+                subject: "",
+                body: ''
+              ) ),
+               buildList('Version', Icon(Icons.approval_rounded),
+            () => openEmail(
+                toEmail: 'okamainnocent2020@gmail.com',
+                subject: "",
+                body: ''
+              ) ),
+               buildList('Privacy Policy', Icon(Icons.privacy_tip),
+            () => openEmail(
+                toEmail: 'okamainnocent2020@gmail.com',
+                subject: "",
+                body: ''
+              ) ),
+              
           ],
         ),
       ),

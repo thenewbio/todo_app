@@ -5,7 +5,6 @@ import 'package:mytodo/provider/note_provider.dart';
 import 'package:mytodo/widget/app_drawer.dart';
 import 'package:mytodo/widget/new_note.dart';
 import 'package:provider/provider.dart';
-import 'package:provider/provider.dart';
 
 class TodoListScreen extends StatefulWidget {
   static const routeName = "./";
@@ -49,22 +48,22 @@ class _TodoListScreenState extends State<TodoListScreen> {
                         children: [
                           Text(
                                       note.title,
-                                      style: textTheme.title.copyWith(fontWeight: FontWeight.normal)
+                                      style: textTheme.headline6.copyWith(fontWeight: FontWeight.normal)
                                     ),
                                      Text(
                                       note.content,
-                                      style: textTheme.subtitle.copyWith(fontWeight: FontWeight.normal)
+                                      style: textTheme.subtitle2.copyWith(fontWeight: FontWeight.normal)
                                     ),
                                     Row(
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
                                          Text(
                   _dateFormat.format(note.dateCreated),
-                  style: textTheme.title.copyWith(fontWeight: FontWeight.normal)
+                  style: textTheme.headline6.copyWith(fontWeight: FontWeight.normal)
                 ),
                 Text(
                   "",
-                  style: textTheme.title.copyWith(fontWeight: FontWeight.normal)
+                  style: textTheme.headline6.copyWith(fontWeight: FontWeight.normal)
                 ),
                                       ],
                                     )

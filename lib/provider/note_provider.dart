@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mytodo/database/note_db.dart';
 import 'package:mytodo/model/notes.dart';
-import 'package:mytodo/model/task.dart';
 
 
 
