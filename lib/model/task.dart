@@ -41,8 +41,10 @@ class Task {
       title: map['title'],
       content: map['content'],
       category: map['category'],
-      dateCreated:  DateTime.parse(map['dateCreated'] as String),
-      scheduledDate: map['scheduledDate'] == null ? null: DateTime.parse(map['scheduledDate'] as String),
+      dateCreated: DateTime.parse(map['dateCreated'] as String),
+      scheduledDate: map['scheduledDate'] == null
+          ? null
+          : DateTime.parse(map['scheduledDate'] as String),
       scheduledTime: map['scheduledTime'],
       isActive: map['isActive'] == 0,
       isImportant: map['isImportant'] == 0,

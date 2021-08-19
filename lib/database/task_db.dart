@@ -34,8 +34,8 @@ class TaskDatabaseHelper {
   }
 
   static createDatabase(Database db, int version) async {
-    await db.execute(
-        '''CREATE TABLE $TABLE ($ID INTEGER PRIMARY KEY AUTOINCREMENT, 
+    await db
+        .execute('''CREATE TABLE $TABLE ($ID INTEGER PRIMARY KEY AUTOINCREMENT, 
         $TITLE TEXT, $DATECREATED TEXT, 
         $CONTENT TEXT, $CATEGORY TEXT, $ISIMPORTANT BOOLEAN,
          $ISACTIVE BOOLEAN, $SCHEDULEDDATE TEXT, $SCHEDULEDTIME TEXT)''');

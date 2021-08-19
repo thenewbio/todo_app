@@ -6,14 +6,13 @@ import 'package:mytodo/provider/task_provider.dart';
 import 'package:mytodo/service/notification.dart';
 import 'package:mytodo/views/new_task_view.dart';
 
-
 import 'confirmation.dart';
 
 class TaskList extends StatefulWidget {
   final Task reminder;
   final TaskProvider provider;
 
-  const TaskList({Key key,  this.reminder, this.provider}) : super(key: key);
+  const TaskList({Key key, this.reminder, this.provider}) : super(key: key);
 
   @override
   _TaskListState createState() => _TaskListState();
@@ -27,7 +26,7 @@ class _TaskListState extends State<TaskList> {
       duration: Duration(milliseconds: 500),
       child: InkWell(
         onTap: () => Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => NewReminderScreen(
+          builder: (context) => NewTaskScreen(
             reminder: widget.reminder,
           ),
         )),
@@ -110,10 +109,8 @@ class _TaskListState extends State<TaskList> {
                                     Navigator.of(context).pop();
                                     widget.provider
                                         .deleteReminder(widget.reminder.id);
-                                    Fluttertoast.showToast(
-                                        msg: 'Task deleted');
-                                  }, 'Delete Task',
-                                      'Have you completed task?');
+                                    Fluttertoast.showToast(msg: 'Task deleted');
+                                  }, 'Delete Task', 'Have you completed task?');
                                 },
                                 icon: Icon(Icons.delete_outline_outlined,
                                     color: widget.reminder.isActive &&

@@ -12,15 +12,15 @@ import 'package:mytodo/widget/custom.dart';
 import 'package:mytodo/widget/task_form.dart';
 import 'package:provider/provider.dart';
 
-class NewReminderScreen extends StatefulWidget {
+class NewTaskScreen extends StatefulWidget {
   final Task reminder;
-  const NewReminderScreen({Key key, this.reminder}) : super(key: key);
+  const NewTaskScreen({Key key, this.reminder}) : super(key: key);
 
   @override
-  _NewReminderScreenState createState() => _NewReminderScreenState();
+  _NewTaskScreenState createState() => _NewTaskScreenState();
 }
 
-class _NewReminderScreenState extends State<NewReminderScreen> {
+class _NewTaskScreenState extends State<NewTaskScreen> {
   var titleController = new TextEditingController();
   var contentController = new TextEditingController();
   var selectedDate = DateTime.now().toLocal();
@@ -92,8 +92,9 @@ class _NewReminderScreenState extends State<NewReminderScreen> {
         builder: (context, notifier, child) => SafeArea(
                 child: Scaffold(
               appBar: AppBar(
-                leading: IconButton(icon: Icon(Icons.arrow_back_ios_new),
-                onPressed:() => Navigator.of(context).pop()),
+                leading: IconButton(
+                    icon: Icon(Icons.arrow_back_ios_new),
+                    onPressed: () => Navigator.of(context).pop()),
                 centerTitle: true,
                 title: Text(getTitle()),
               ),
@@ -178,7 +179,7 @@ class _NewReminderScreenState extends State<NewReminderScreen> {
     DateTime pickedDate = await pickScheduleDate(context);
     if (pickedDate != null) {
       LocalNotification.scheduleNotification(
-          0,  titleController.text,contentController.text,pickedDate);
+          0, titleController.text, contentController.text, pickedDate);
     }
   }
 
@@ -202,6 +203,7 @@ class _NewReminderScreenState extends State<NewReminderScreen> {
       reminder.id = widget.reminder.id;
       provider.updateReminder(reminder);
     } else {
+      // reminder.id = widget.reminder.id;
       provider.createReminder(reminder);
     }
     provider.getReminders();

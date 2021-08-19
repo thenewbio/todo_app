@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:mytodo/model/notes.dart';
-import 'package:mytodo/provider/note_provider.dart';
-import 'package:provider/provider.dart';
+import '../database/note_db.dart';
+import '../model/notes.dart';
 
 class AddTaskScreen extends StatefulWidget {
-  final Note note;
-  AddTaskScreen({ this.note});
+  final Function updateTasklist;
+  final Note task;
+  AddTaskScreen({this.updateTasklist, this.task});
 
   @override
   _AddTaskScreenState createState() => _AddTaskScreenState();
@@ -14,22 +14,23 @@ class AddTaskScreen extends StatefulWidget {
 
 class _AddTaskScreenState extends State<AddTaskScreen> {
   final _formKey = GlobalKey<FormState>();
+  String _title = "";
+  String _priority;
+  String _desc = "";
   DateTime _date = DateTime.now();
   TextEditingController _dateController = TextEditingController();
-   var titleController = new TextEditingController();
-  var contentController = new TextEditingController();
 
   final DateFormat _dateFormat = DateFormat('MMM dd, yyyy');
-
+  final List<String> _priorities = ['Low', 'Medium', 'High'];
 
   @override
   void initState() {
     super.initState();
-    if (widget.note != null) {
-      titleController.text = widget.note.title;
-      contentController.text = widget.note.content;
-      _date = widget.note.dateCreated;
-    
+    if (widget.task != null) {
+      _title = widget.task.title;
+      _date = widget.task.date;
+      _desc = widget.task.time;
+      _priority = widget.task.priority;
     }
     _dateController.text = _dateFormat.format(_date);
   }
@@ -54,153 +55,168 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
     }
   }
 
- _summit(NoteProvider provider) {
+  _delete() {
+    DatabaseHelper.instance.deleteNote(widget.task.id);
+    widget.updateTasklist();
+    Navigator.pop(context);
+  }
+
+  _summit() {
     if (_formKey.currentState.validate()) {
       _formKey.currentState.save();
-      print('$titleController, $_date, $contentController,');
-     
+      print('$_title, $_date, $_desc, $_priority');
 
-   Note note = Note(content: contentController.text, title: titleController.text, dateCreated: _date);
-      if (widget.note != null) {
-        note.id = widget.note.id;
-       provider.updateNotes(note);
+      Note task =
+          Note(title: _title, date: _date, time: _desc, priority: _priority);
+      if (widget.task == null) {
+        task.status = 0;
+        DatabaseHelper.instance.insertNote(task);
       } else {
-       provider.createNote(note);
+        task.id = widget.task.id;
+        task.status = widget.task.status;
+        DatabaseHelper.instance.updateNote(task);
       }
-      provider.getNotes();
+      widget.updateTasklist();
       Navigator.pop(context);
     }
   }
-     
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<NoteProvider>(
-       builder: (context, notifier, child) => SafeArea(
-        child: Scaffold(
-          body: GestureDetector(
-            onTap: () => FocusScope.of(context).unfocus(),
-            child: SingleChildScrollView(
-              child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 40.0, vertical: 50.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    GestureDetector(
-                      onTap: () => Navigator.pop(context),
-                      child: Icon(
-                        Icons.arrow_back_ios_new,
-                        size: 30,
-                        color: Theme.of(context).primaryColor,
+    return SafeArea(
+      child: Scaffold(
+          appBar: AppBar(
+            leading: IconButton(
+              onPressed: () => Navigator.pop(context),
+              icon: Icon(Icons.arrow_back_ios_new, size: 30),
+            ),
+            title: Text(
+              widget.task == null ? 'Add Task' : 'Update Task',
+              style: TextStyle(
+                  fontSize: 30,
+                  fontWeight: FontWeight.bold),
+            ),
+            actions: [
+              widget.task == null
+                  ? Text('${''}')
+                  : IconButton(
+                      onPressed: _delete,
+                      icon: Icon(Icons.delete_outline, size: 30),
+                    ),
+            ],
+          ),
+          body: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Form(
+                  key: _formKey,
+                  child: Column(children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 20),
+                      child: TextFormField(
+                        autovalidateMode: AutovalidateMode.always,
+                        keyboardType: TextInputType.text,
+                        autocorrect: true,
+                        textInputAction: TextInputAction.done,
+                        style: TextStyle(fontSize: 18),
+                        decoration: InputDecoration(
+                            labelText: "Note Title",
+                            labelStyle: TextStyle(fontSize: 18.0),
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10))),
+                        validator: (input) => input.trim().isEmpty
+                            ? 'Please enter a note title'
+                            : null,
+                        onSaved: (input) => _title = input,
+                        initialValue: _title,
                       ),
                     ),
-                    SizedBox(
-                      height: 20,
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 20),
+                      child: TextFormField(
+                        autovalidateMode: AutovalidateMode.always,
+                        keyboardType: TextInputType.multiline,
+                        autocorrect: true,
+                        textInputAction: TextInputAction.done,
+                        maxLines: null,
+                        style: TextStyle(fontSize: 18),
+                        decoration: InputDecoration(
+                          labelText: "Brief Description",
+                          labelStyle: TextStyle(fontSize: 18.0),
+                        ),
+                        validator: (input) => input.trim().isEmpty
+                            ? 'Please describe your note'
+                            : null,
+                        onSaved: (input) => _desc = input,
+                        initialValue: _desc,
+                      ),
                     ),
-                    Text(
-                      widget.note == null ? 'Add Note' : 'Update Note',
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 40,
-                          fontWeight: FontWeight.bold),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 20),
+                      child: TextFormField(
+                        readOnly: true,
+                        controller: _dateController,
+                        style: TextStyle(fontSize: 18),
+                        onTap: _handleDatePicker,
+                        decoration: InputDecoration(
+                            labelText: "Date",
+                            labelStyle: TextStyle(fontSize: 18.0),
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10))),
+                      ),
                     ),
-                    SizedBox(
-                      height: 10,
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 20),
+                      child: DropdownButtonFormField(
+                        isDense: true,
+                        icon: Icon(Icons.arrow_drop_down_circle),
+                        iconSize: 22.0,
+                        items: _priorities.map((String priority) {
+                          return DropdownMenuItem(
+                              value: priority,
+                              child: Text(
+                                priority,
+                                style: TextStyle(
+                                    color: Colors.black, fontSize: 18),
+                              ));
+                        }).toList(),
+                        style: TextStyle(fontSize: 18),
+                        decoration: InputDecoration(
+                            labelText: "Priority",
+                            labelStyle: TextStyle(fontSize: 18.0),
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10))),
+                        validator: (input) => _priorities == null
+                            ? 'Please select a priority level'
+                            : null,
+                        onSaved: (input) => _priority = input,
+                        onChanged: (value) {
+                          setState(() {
+                            _priority = value;
+                          });
+                        },
+                        value: _priority,
+                      ),
                     ),
-                    Form(
-                        key: _formKey,
-                        child: Column(children: [
-                          Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 20),
-                            child: TextFormField(
-                              style: TextStyle(fontSize: 18),
-                              decoration: InputDecoration(
-                                  labelText: "Title",
-                                  labelStyle: TextStyle(fontSize: 18.0),),
-                              validator: (input) => input.trim().isEmpty
-                                  ? 'Please enter a task title'
-                                  : null,
-                              onSaved: (input) => titleController.text = input,
-                              initialValue: titleController.text,
-                            ),
-                          ),
-                           Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 20),
-                            child: TextFormField(
-                              keyboardType:  TextInputType.multiline,
-                              maxLines: null,
-                              style: TextStyle(fontSize: 18),
-                              decoration: InputDecoration(
-                                  labelText: "Desc",
-                                  labelStyle: TextStyle(fontSize: 18.0),
-                                 ),
-                              validator: (input) => input.trim().isEmpty
-                                  ? 'Describe your note'
-                                  : null,
-                              onSaved: (input) => contentController.text = input,
-                              initialValue: contentController.text,
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 20),
-                            child: TextFormField(
-                              readOnly: true,
-                              controller: _dateController,
-                              style: TextStyle(fontSize: 18),
-                              onTap: _handleDatePicker,
-                              decoration: InputDecoration(
-                                  labelText: "Date",
-                                  labelStyle: TextStyle(fontSize: 18.0),
-                                  border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10))),
-                            ),
-                          ),
-                          Container(
-                            margin: EdgeInsets.symmetric(vertical: 20.0),
-                            height: 60,
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                              color: Theme.of(context).primaryColor,
-                              borderRadius: BorderRadius.circular(30.0),
-                            ),
-                            child: TextButton(
-                                onPressed:(){
-                                  _summit(notifier);
-                                },
-                                child: Text(
-                                  widget.note == null ? "Add" : "Update",
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 20.0),
-                                )),
-                          ),
-                          widget.note != null
-                              ? Container(
-                                  margin: EdgeInsets.symmetric(vertical: 20.0),
-                                  height: 60,
-                                  width: double.infinity,
-                                  decoration: BoxDecoration(
-                                    color: Theme.of(context).primaryColor,
-                                    borderRadius: BorderRadius.circular(30.0),
-                                  ),
-                                  child: TextButton(
-                                      onPressed: () {
-                                      
-                                      } ,
-                                      child: Text(
-                                        'Delete',
-                                        style: TextStyle(
-                                            color: Colors.white, fontSize: 20.0),
-                                      )),
-                                )
-                              : SizedBox.shrink()
-                        ]))
-                  ],
-                ),
-              ),
+                    Container(
+                      margin: EdgeInsets.symmetric(vertical: 20.0),
+                      height: 60,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).primaryColor,
+                        borderRadius: BorderRadius.circular(30.0),
+                      ),
+                      child: TextButton(
+                          onPressed: _summit,
+                          child: Text(
+                            widget.task == null ? "Add" : "Update",
+                            style:
+                                TextStyle(color: Colors.white, fontSize: 20.0),
+                          )),
+                    ),
+                  ])),
             ),
-          ),
-        ),
-      ),
+          )),
     );
   }
 }

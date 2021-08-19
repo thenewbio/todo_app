@@ -4,29 +4,31 @@ import 'dart:io';
 
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
-class AdState{
+class AdState {
   Future<InitializationStatus> initialize;
 
   AdState(this.initialize);
 
   String get bannerAd => Platform.isAndroid
-  ? 'ca-app-pub-3940256099942544/6300978111'
-  : 'ca-app-pub-3940256099942544/630097811';
-
+      ? 'ca-app-pub-3940256099942544/6300978111'
+      : 'ca-app-pub-3940256099942544/630097811';
 
   AdListener get adListener => _adListener;
 
   AdListener _adListener = AdListener(
     onAdLoaded: (ad) => print('Ad loaded: ${ad.adUnitId}.'),
     onAdClosed: (ad) => print('Ad closed: ${ad.adUnitId}.'),
-    onAdFailedToLoad: (ad, error) => print('Ad failed to load: ${ad.adUnitId}., $error'),
+    onAdFailedToLoad: (ad, error) =>
+        print('Ad failed to load: ${ad.adUnitId}., $error'),
     onAdOpened: (ad) => print('Ad opened: ${ad.adUnitId}.'),
-    onAppEvent: (ad, name, data) => print('Ad opened: ${ad.adUnitId}, $name, $data'),
+    onAppEvent: (ad, name, data) =>
+        print('Ad opened: ${ad.adUnitId}, $name, $data'),
     onApplicationExit: (ad) => print('App Exit: ${ad.adUnitId}.'),
-    onNativeAdClicked: (nativeAd) => print('Native ad clicked: ${nativeAd.adUnitId}.'),
-    onNativeAdImpression: (nativeAd) => print('Native ad impression: ${nativeAd.adUnitId}.'),
-    onRewardedAdUserEarnedReward: (ad , reward) => print(
-      'User rewarded: ${ad.adUnitId}, ${reward.amount} ${reward.type}'),
+    onNativeAdClicked: (nativeAd) =>
+        print('Native ad clicked: ${nativeAd.adUnitId}.'),
+    onNativeAdImpression: (nativeAd) =>
+        print('Native ad impression: ${nativeAd.adUnitId}.'),
+    onRewardedAdUserEarnedReward: (ad, reward) =>
+        print('User rewarded: ${ad.adUnitId}, ${reward.amount} ${reward.type}'),
   );
-  
 }

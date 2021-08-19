@@ -3,47 +3,25 @@ import 'package:flutter/material.dart';
 import 'package:mytodo/database/note_db.dart';
 import 'package:mytodo/model/notes.dart';
 
-
-
 class NoteProvider extends ChangeNotifier {
-  List<Note> notes = [];
-
-  Future<List<Note>> getNotes() async {
-    Future<List<Note>> list = NoteDatabaseHelper.getNotes();
-    await list.then((notes) {
-      this.notes = notes;
-      notifyListeners();
-    });
-    return list;
+  delete(Note note) {
+    DatabaseHelper.instance.deleteNote(note.id);
   }
 
-  void createNote(Note note) async {
-    if (note.title.isEmpty && note.content.isEmpty) return;
-    await NoteDatabaseHelper.saveNote(note);
+  aboutUs(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+              title: Text("About US"),
+              content: ListView(children: [
+                Text(
+                    "Welcome to Todo plus, your number one source for all things involving organizing your daily tasks.\n We're dedicated to providing you the very best of task management.Founded in 2021 by Innocent, Todo plus has come a long way from its beginnings in Nigeria.When Innocent first started out, his passion for creating a friendly task management app drove them to start their own business.We hope you enjoy our products as much as we enjoy offering them to you. If you have any questions or comments, please don't hesitate to contact us.\nThanks"),
+              ]),
+              actions: [
+                TextButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    child: Text("OK"))
+              ],
+            ));
   }
-
-  TextStyle getTextStyle(BuildContext context, Note note,
-     [ double fontSize, FontWeight fontWeight]) {
-    if (Theme.of(context).brightness == Brightness.dark)
-      return TextStyle(
-          fontSize: fontSize,
-          fontWeight: fontWeight);
-    else
-      return TextStyle(
-          fontSize: fontSize,
-          fontWeight: fontWeight);
-  }
-
-  updateNotes(Note note) async {
-    await NoteDatabaseHelper.updateNote(note);
-    getNotes();
-    notifyListeners();
-  }
-
-  void deleteNote(int id) {
-    NoteDatabaseHelper.deleteNote(id);
-    getNotes();
-    notifyListeners();
-  }
- 
 }

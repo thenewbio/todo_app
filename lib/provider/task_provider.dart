@@ -8,11 +8,9 @@ import 'package:path_provider/path_provider.dart';
 import 'package:syncfusion_flutter_xlsio/xlsio.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-
 const _url = 'https://github.com/thenewbio?tab=repositories';
 const url = 'https://web.facebook.com/barnabas.okama.7/';
 const inst = 'https://www.instagram.com/okama.innocent/';
-
 
 class TaskProvider extends ChangeNotifier {
   List<Task> reminders = [];
@@ -37,7 +35,7 @@ class TaskProvider extends ChangeNotifier {
   }
 
   TextStyle getTextStyle(BuildContext context, Task reminder,
-     [ double fontSize, FontWeight fontWeight]) {
+      [double fontSize, FontWeight fontWeight]) {
     if (Theme.of(context).brightness == Brightness.dark)
       return TextStyle(
           color: reminder.isActive ? Colors.white : Colors.grey,
@@ -61,7 +59,8 @@ class TaskProvider extends ChangeNotifier {
     getReminders();
     notifyListeners();
   }
-   Future<void> createExcel() async {
+
+  Future<void> createExcel() async {
     final Workbook workbook = Workbook();
     // final Worksheet sheet = workbook.worksheets[0];
     // sheet.getRangeByName('A1').setText('Hello world');
@@ -74,67 +73,50 @@ class TaskProvider extends ChangeNotifier {
     await file.writeAsBytes(bytes, flush: true);
     OpenFile.open(fileName);
   }
-void _launchURL() async =>
- await canLaunch(url) ? await launch(url) : throw 'Could not launch $url';
-    void launchURL() async =>
-    await canLaunch(_url) ? await launch(_url) : throw 'Could not launch $_url';
-    void __launchURL() async =>
-    await canLaunch(inst) ? await launch(inst) : throw 'Could not launch $inst';
-showMessageDialog(BuildContext context) => 
-  showDialog(context: context, builder: (context)=> Center(
-    child: Container(
-      height: 300,
-      width: MediaQuery.of(context).size.width,
-      child: AlertDialog(
-        title:  Text("Follow us",style: TextStyle(color: Colors.blue)),
-        content: ListView(
-            children: ListTile.divideTiles(tiles: [
-               ListTile(
-                title: Text("Facebook"),
-                onTap: (){
-                 _launchURL();
-                 notifyListeners();
-                },
+
+  void _launchURL() async =>
+      await canLaunch(url) ? await launch(url) : throw 'Could not launch $url';
+  void launchURL() async => await canLaunch(_url)
+      ? await launch(_url)
+      : throw 'Could not launch $_url';
+  void __launchURL() async => await canLaunch(inst)
+      ? await launch(inst)
+      : throw 'Could not launch $inst';
+  showMessageDialog(BuildContext context) => showDialog(
+      context: context,
+      builder: (context) => Center(
+            child: Container(
+              height: 300,
+              width: MediaQuery.of(context).size.width,
+              child: AlertDialog(
+                title: Text("Follow us", style: TextStyle(color: Colors.blue)),
+                content: ListView(
+                  children: ListTile.divideTiles(tiles: [
+                    ListTile(
+                      title: Text("Facebook"),
+                      onTap: () {
+                        _launchURL();
+                        notifyListeners();
+                      },
+                    ),
+                    ListTile(
+                      title: Text("Instagram"),
+                      onTap: () {
+                        __launchURL();
+                        notifyListeners();
+                      },
+                    ),
+                    ListTile(
+                      title: Text("GitHub"),
+                      onTap: () {
+                        launchURL();
+                        notifyListeners();
+                      },
+                    )
+                  ], context: context)
+                      .toList(),
+                ),
               ),
-                        ListTile(
-                title: Text("Instagram"),
-                onTap: (){
-                  __launchURL();
-                  notifyListeners();
-                },
-              ),
-                        ListTile(
-                title: Text("GitHub"),
-                onTap: (){
-                  launchURL();
-                  notifyListeners();
-                },
-              )
-            ],context: context).toList(),
-          ),
-        ),
-    ),
-  ));
-  help(BuildContext context) => 
-  showDialog(context: context, builder: (context)=> Center(
-    child: Container(
-      height: 300,
-      width: MediaQuery.of(context).size.width,
-      child: AlertDialog(
-        title:  Text("Help page",style: TextStyle(color: Colors.blue)),
-        content: ListView(
-            children: ListTile.divideTiles(tiles: [
-               Text('jkjkdjjkdjkjkdjkjkdjjdshsjhsjhjhshjsjhmxcnmxxnm\ngsggsghghsghghsgghsghghs\njhsjhjhsjhjhsjhshhsh'
-               ),
-               ElevatedButton(onPressed: (){
-                 Navigator.of(context).pop();
-               }, child: Text("OK"))
-               
-            ],context: context).toList(),
-          ),
-        ),
-    ),
-  ));
- 
- 
+            ),
+          ));
 }

@@ -27,19 +27,19 @@ class LocalNotification {
   }
 
   static final notificationDetails = NotificationDetails(
-      android: AndroidNotificationDetails(
-          '1', 'Scheduled', 'Scheduled notification',
-          enableLights: true, importance: Importance.high,
-          // sound: RawResourceAndroidNotificationSound('iphone')
-          ),);
-          // iOS: iOSPlatformChannelSpecifics,
-          // macOS: macOSPlatformChannelSpecifics
-          
-    // static final iOSPlatformChannelSpecifics =
-    //     IOSNotificationDetails(sound: 'iphone');
-    //  static final macOSPlatformChannelSpecifics =
-    //     MacOSNotificationDetails(sound: 'iphone');
-   
+    android: AndroidNotificationDetails(
+      '1', 'Scheduled', 'Scheduled notification',
+      enableLights: true, importance: Importance.high,
+      // sound: RawResourceAndroidNotificationSound('iphone')
+    ),
+  );
+  // iOS: iOSPlatformChannelSpecifics,
+  // macOS: macOSPlatformChannelSpecifics
+
+  // static final iOSPlatformChannelSpecifics =
+  //     IOSNotificationDetails(sound: 'iphone');
+  //  static final macOSPlatformChannelSpecifics =
+  //     MacOSNotificationDetails(sound: 'iphone');
 
   static Future<void> scheduleNotification(
       int id, String title, String body, DateTime scheduledTime,

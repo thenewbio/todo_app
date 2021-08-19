@@ -1,40 +1,35 @@
 class Note {
   int id;
-  final String title;
-  final String content;
-  final DateTime dateCreated;
- 
+  String title;
+  String time;
+  DateTime date;
+  String priority;
+  int status;
 
-  Note({
-    this.id,
-    this.title,
-    this.content,
-    this.dateCreated,
-   
-  });
+  Note({this.title, this.date, this.time, this.priority, this.status});
+  Note.withId(
+      {this.id, this.title, this.date, this.time, this.priority, this.status});
 
   Map<String, dynamic> toMap() {
-    return {
-      'id': id,
-      'title': title,
-      'content': content,
-      'dateCreated': dateCreated.toIso8601String(),
-   
-    };
+    final map = Map<String, dynamic>();
+    if (id != null) {
+      map['id'] = id;
+    }
+    map['title'] = title;
+    map['date'] = date.toIso8601String();
+    map['time'] = time;
+    map['priority'] = priority;
+    map['status'] = status;
+    return map;
   }
 
   factory Note.fromMap(Map<String, dynamic> map) {
-    return Note(
-      id: map['id'],
-      title: map['title'],
-      content: map['content'],
-      dateCreated: DateTime.parse(map['dateCreated'] as String),
-
-    );
-  }
-
-  @override
-  String toString() {
-    return 'Note(id: $id, title: $title, content: $content, dateCreated: $dateCreated,)';
+    return Note.withId(
+        id: map['id'],
+        title: map['title'],
+        date: DateTime.parse(map['date']),
+        time: map['time'],
+        priority: map['priority'],
+        status: map['status']);
   }
 }
